@@ -50,6 +50,65 @@ receipt-manager/
 └── README.md
 ```
 
+## Project Status
+
+🚧 In Progress
+
+Current Stage:
+- Completed project planning
+- Set up Go module and Git repository
+- Built the initial Fyne application window
+- Added the home screen with placeholder buttons
+
+### Features Progress
+
+#### Completed
+
+- Application window
+- Home screen
+- Welcome message
+- Add Receipt button
+- View Receipts button
+- Settings button
+- Placeholder dialogs
+
+#### Planned
+
+- Add Receipt form
+- Receipt list
+- Receipt details
+- Search receipts
+- SQLite database
+- PDF export
+- Reports
+
+## Getting Started
+
+#### Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+#### Install dependencies
+
+```bash
+go mod tidy
+```
+
+#### Run the application
+
+```bash
+go run ./cmd/receipt-manager
+```
+
+#### Technologies
+
+- Go
+- Fyne
+- SQLite (planned)
+- Git
+
 ## Roadmap
 
 ### Version 1.0
@@ -63,6 +122,18 @@ receipt-manager/
 - [ ] Add receipt categories
 - [ ] Store receipt images
 - [ ] Testing and bug fixes
+
+#### Roadmap Progress
+
+- [x] Project planning
+- [x] Project setup
+- [x] Initial Fyne window
+- [x] Home screen
+- [ ] Add Receipt form
+- [ ] SQLite database
+- [ ] Search functionality
+- [ ] Reports
+- [ ] PDF export
 
 ### Future Versions
 
@@ -79,3 +150,4 @@ receipt-manager/
 ## License
 
 This project is licensed under the HYMERS License.
+
