@@ -5,13 +5,13 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/widget"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
-	// Welcome message 
+	// Welcome message
 	fmt.Println("Hello, Welcome to the Receipt Manager Application!")
 	fmt.Println("This application helps you manage your receipts efficiently.")
 	fmt.Println("You can add, view, and delete receipts as needed.")
@@ -41,15 +41,14 @@ func main() {
 
 	// You can use any name you like for the window title, but "Receipt Manager" is a
 	//  descriptive name that reflects the purpose of our application.
-	w := myApp.NewWindow("Receipt Manager")
-
+	myWindow := myApp.NewWindow("Receipt Manager")
 
 	//resize the window to a specific size using the Resize() method.
 	// The Resize() method takes a fyne.Size parameter that specifies the width
 	//  and height of the window.
 	// In this case, we set the size to 800 pixels wide and 600 pixels tall.
 	// You can adjust these values to fit your application's needs.
-	w.Resize(fyne.NewSize(800, 600))
+	myWindow.Resize(fyne.NewSize(800, 600))
 
 	// Next, we set the content of the window using the SetContent() method.
 	// The SetContent() method takes a fyne.CanvasObject parameter that represents
@@ -65,29 +64,80 @@ func main() {
 	title1 := widget.NewLabel("Receipt Manager v1.0")
 	title2 := widget.NewLabel("Welcome to my first Go desktop Application!")
 
-	welcome := widget.NewLabel("This application helps you manage your receipts efficiently.")	
+	welcome := widget.NewLabel("This application helps you manage your receipts efficiently.")
+
+	// Task 1: Create two Entry widgets
+	// --- Input Fields ---
+	storeEntry := widget.NewEntry()
+	// Set the default store name text
+	storeEntry.SetText("Shoprite")
+
+	receiptEntry := widget.NewEntry()
+	// Set the default receipt number text
+	receiptEntry.SetText("RCP-000001")
+
+	// Task 2: Create two Labels
+	storeLabel := widget.NewLabel("Store Name")
+	receiptLabel := widget.NewLabel("Receipt Number")
+
+	// Task 3: Create two Buttons
+	saveBtn := widget.NewButton("Save", func() {
+		// Callback for saving data
+
+		// Validation 1: Store Name check
+		if storeEntry.Text == "" {
+			dialog.ShowInformation(
+				"Error",
+				"Store Name is required.",
+				myWindow, // Using your window variable name
+			)
+			return // Stops execution here so it doesn't print or reset below!
+		}
+
+		// 🛠️ Validation 2: Receipt Number check
+		if receiptEntry.Text == "" {
+			dialog.ShowInformation(
+				"Error",
+				"Receipt Number is required.",
+				myWindow,
+			)
+			return
+		}
+
+		storeName := storeEntry.Text
+		receiptNumber := receiptEntry.Text
+		fmt.Printf("Saving receipt: Store Name: %s, Receipt Number: %s\n", storeName, receiptNumber)
+		dialog.ShowInformation("Receipt Saved", fmt.Sprintf("Receipt saved:\nStore Name: %s\nReceipt Number: %s", storeName, receiptNumber), myWindow)
+	})
+
+	cancelBtn := widget.NewButton("Cancel", func() {
+		myWindow.Close()
+	})
+
+	// Task 4: Put the buttons inside an HBox
+	buttonBox := container.NewHBox(saveBtn, cancelBtn)
 
 	// Next, we create two buttons using the widget.NewButton() function.
 	// The first button is labeled "+ Add Receipt" and has a callback function that
 	//  prints "Add Receipt button clicked!" to the console when the button is clicked.
 	// The second button is labeled "View Receipts" and has a callback function that
-	//  prints "View Receipts button clicked!" to the console when the button is clicked.	
+	//  prints "View Receipts button clicked!" to the console when the button is clicked.
 	addButton := widget.NewButton("+ Add Receipt", func() {
 		fmt.Println("Add Receipt button clicked!")
 		// we will add the code to open a new window for adding receipts here in the future.
 
 		// For now, we will display a dialog box to inform the user that
-		dialog.ShowInformation("Add Receipt Message", "Add Receipt window is under construction.", w)
+		dialog.ShowInformation("Add Receipt Message", "Add Receipt window is under construction.", myWindow)
 	})
 
 	// The second button is labeled "View Receipts" and has a callback function that
-	//  prints "View Receipts button clicked!" to the console when the button is clicked.		
+	//  prints "View Receipts button clicked!" to the console when the button is clicked.
 	viewButton := widget.NewButton("View Receipts", func() {
 		fmt.Println("View Receipts button clicked!")
 		// we will add the code to open a new window for viewing receipts here in the future.
 
 		// For now, we will display a dialog box to inform the user that
-		dialog.ShowInformation("View Receipts Message", "View Receipts window is under construction.", w)
+		dialog.ShowInformation("View Receipts Message", "View Receipts window is under construction.", myWindow)
 	})
 
 	// The third button is labeled "Settings" and has a callback function that
@@ -97,29 +147,33 @@ func main() {
 
 		// we will add the code to open a new window for viewing receipts here in the future.
 
-		// For now, we will display a dialog box to inform the user that 
-		// the settings window is under construction.	
-		dialog.ShowInformation("Settings Message", "Settings window is under construction.", w)
+		// For now, we will display a dialog box to inform the user that
+		// the settings window is under construction.
+		dialog.ShowInformation("Settings Message", "Settings window is under construction.", myWindow)
 	})
 
 	// Next, we create a vertical box container using the container.NewVBox() function.
 	// The NewVBox() function takes one or more fyne.CanvasObject parameters that represent
 	//  the content to be displayed in the container.
 	// In this case, we pass the label and the two buttons as parameters to the NewVBox() function.
-	// The vertical box container arranges its child objects vertically, one below the other.		
+	// The vertical box container arranges its child objects vertically, one below the other.
 	content := container.NewVBox(
 		title1,
 		title2,
 		welcome,
+		storeLabel,
+		storeEntry,
+		receiptLabel,
+		receiptEntry,
+		buttonBox,
 		addButton,
 		viewButton,
 		settingsButton,
 	)
 
-	// Finally, we set the content of the window to the 
+	// Finally, we set the content of the window to the
 	// vertical box container using the SetContent() method.
-	w.SetContent(content)
-
+	myWindow.SetContent(content)
 
 	// Finally, we call the ShowAndRun() method on the window instance.
 	// This method displays the window and starts the application's main event loop.
@@ -127,8 +181,6 @@ func main() {
 	//  text input, and updates the user interface accordingly.
 	// The ShowAndRun() method blocks the execution of the program until the window is closed,
 	//  allowing the application to run continuously until the user decides to exit.
-	w.ShowAndRun()
-
-
+	myWindow.ShowAndRun()
 
 }
