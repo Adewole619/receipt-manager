@@ -1,4 +1,4 @@
-module github.com/adewole619/receipt-manager
+module receipt-manager
 
 go 1.22.0
 

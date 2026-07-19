@@ -8,6 +8,8 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
+
+	"receipt-manager/internal/validation"
 )
 
 func main() {
@@ -24,7 +26,7 @@ func main() {
 	// Our first line of code wi'll create a new application using the app.NewApp() function.
 	// This function initializes a new Fyne application and returns an instance of the app.
 	// App interface.
-	myApp := app.New()
+	myApp := app.NewWithID("receipt-manager")
 
 	// The app variable now holds the instance of our Fyne application.
 	// We can use this instance to create windows, set up the user interface,
@@ -84,28 +86,15 @@ func main() {
 	saveBtn := widget.NewButton("Save", func() {
 		// Callback for saving data
 
-		// Validation 1: Store Name check
-		if storeEntry.Text == "" {
-			dialog.ShowInformation(
-				"Error",
-				"Store Name is required.",
-				myWindow, // Using your window variable name
-			)
-			return // Stops execution here so it doesn't print or reset below!
-		}
+		// storeName := strings.TrimSpace(storeEntry.Text)
+		// receiptNumber := strings.TrimSpace(receiptEntry.Text)
+		storeName, receiptNumber, err := validation.ValidateReceipt(storeEntry.Text, receiptEntry.Text)
 
-		// 🛠️ Validation 2: Receipt Number check
-		if receiptEntry.Text == "" {
-			dialog.ShowInformation(
-				"Error",
-				"Receipt Number is required.",
-				myWindow,
-			)
+		if err != nil {
+			dialog.ShowError(err, myWindow)
 			return
 		}
 
-		storeName := storeEntry.Text
-		receiptNumber := receiptEntry.Text
 		fmt.Printf("Saving receipt: Store Name: %s, Receipt Number: %s\n", storeName, receiptNumber)
 		dialog.ShowInformation("Receipt Saved", fmt.Sprintf("Receipt saved:\nStore Name: %s\nReceipt Number: %s", storeName, receiptNumber), myWindow)
 	})
