@@ -102,6 +102,32 @@ go mod tidy
 go run ./cmd/receipt-manager
 ```
 
+#### Run with Docker
+
+Build the image:
+
+```bash
+docker build -t receipt-manager:local .
+```
+
+Run the container on a Linux host with X11 access:
+
+```bash
+xhost +local:root
+
+docker run --rm -it \
+  -e DISPLAY=$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+  --network host \
+  receipt-manager:local
+```
+
+Or with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
 #### Technologies
 
 - Go
