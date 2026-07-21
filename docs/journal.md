@@ -6,6 +6,135 @@ A daily log of concepts learned, challenges tackled, and milestones reached whil
 
 ## 🗓️ Daily Entries
 
+# Day 5
+
+## Date
+21 July 2026
+
+## Objective
+
+Learn how to use Go structs to model real-world data, create a Receipt model, and understand why structs make applications easier to maintain as they grow.
+
+---
+
+## What I Learned
+
+### Structs
+
+- A struct is a custom data type that groups related information together.
+- Structs allow me to represent real-world objects in code.
+- Instead of passing many individual variables, I can pass one struct that contains all the related data.
+
+### Receipt Model
+
+- A Receipt is a real-world object.
+- Every receipt has related information such as:
+  - Store Name
+  - Receipt Number
+  - Date
+  - Category
+  - Total Amount
+  - Notes
+- These fields belong together, making a struct the best way to represent a receipt.
+
+### Models
+
+- A model is a blueprint for creating objects.
+- Every receipt in my application will follow the same structure.
+- Different receipts contain different values but use the same Receipt model.
+
+### Project Organization
+
+I created (or planned to create) a new package:
+
+```
+internal/
+    models/
+        receipt.go
+```
+
+This package is responsible for defining application data structures.
+
+### Separation of Concerns
+
+I learned that every package should have one responsibility.
+
+- `ui` → User interface
+- `validation` → Validate receipt data
+- `models` → Define data structures
+- `database` → Save and retrieve data (later)
+
+Keeping these responsibilities separate makes the project easier to understand and maintain.
+
+---
+
+## What I Built
+
+- Planned the Receipt model.
+- Created the `models` package.
+- Created (or prepared to create) the `Receipt` struct.
+- Planned to update the validation function so it accepts a Receipt instead of multiple strings.
+- Continued improving the project structure.
+
+---
+
+## Challenges
+
+- Understanding when to use a struct instead of multiple variables.
+- Deciding what fields belong inside the Receipt model.
+- Thinking about how introducing a Receipt struct affects the rest of the application.
+
+---
+
+## Solutions
+
+- Learned that a struct groups related data together.
+- Realized that using a Receipt struct keeps function signatures simple.
+- Understood that adding new fields later becomes much easier because the Receipt struct can grow without changing every function call.
+
+---
+
+## Key Takeaways
+
+- A struct represents one complete object.
+- Related information should be grouped together.
+- Models describe the shape of application data.
+- Structs improve readability and maintainability.
+- Large applications rely heavily on models to organize data.
+
+---
+
+## Design Decisions
+
+Today I decided that:
+
+- A Receipt should be represented by a struct.
+- Validation should eventually accept a Receipt instead of individual strings.
+- Future features like saving to a database, exporting receipts, and searching receipts should all work with the Receipt model.
+
+---
+
+## Questions I Asked Today
+
+- Should I continue passing individual strings?
+- Would a Receipt struct be a better design?
+- Why do professional Go applications use models?
+
+---
+
+## Reflection
+
+Today I realized that software design is about organizing information as much as it is about writing code. Instead of thinking about separate variables, I started thinking about a receipt as a single object with related pieces of information. I also understood that using a Receipt struct now will make it much easier to add new features later without rewriting many function calls.
+
+---
+
+## Tomorrow's Goal (Day 6)
+
+- Finish integrating the Receipt model into the application.
+- Refactor the validation function to use the Receipt struct.
+- Prepare the project for storing receipts.
+- Continue improving the application's architecture.
+
 # Day 4
 
 ## Date

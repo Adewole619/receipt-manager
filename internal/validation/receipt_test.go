@@ -3,10 +3,15 @@ package validation
 import (
 	"strings"
 	"testing"
+
+	"receipt-manager/internal/models"
 )
 
 func TestValidateReceiptReturnsTrimmedValuesOnSuccess(t *testing.T) {
-	storeName, receiptNumber, err := ValidateReceipt("  Shoprite  ", "  RCP-000001  ")
+	storeName, receiptNumber, err := ValidateReceipt(models.Receipt{
+		StoreName:     "  Shoprite  ",
+		ReceiptNumber: "  RCP-000001  ",
+	})
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -21,7 +26,10 @@ func TestValidateReceiptReturnsTrimmedValuesOnSuccess(t *testing.T) {
 }
 
 func TestValidateReceiptReturnsCleanValuesWhenValidationFails(t *testing.T) {
-	storeName, receiptNumber, err := ValidateReceipt("   ", "  RCP-000001  ")
+	storeName, receiptNumber, err := ValidateReceipt(models.Receipt{
+		StoreName:     "   ",
+		ReceiptNumber: "  RCP-000001  ",
+	})
 	if err == nil {
 		t.Fatal("expected validation error, got nil")
 	}

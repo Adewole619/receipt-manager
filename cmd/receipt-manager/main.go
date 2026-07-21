@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 
+	"receipt-manager/internal/models"
 	"receipt-manager/internal/validation"
 )
 
@@ -88,7 +89,11 @@ func main() {
 
 		// storeName := strings.TrimSpace(storeEntry.Text)
 		// receiptNumber := strings.TrimSpace(receiptEntry.Text)
-		storeName, receiptNumber, err := validation.ValidateReceipt(storeEntry.Text, receiptEntry.Text)
+		receipt := models.Receipt{
+			StoreName:     storeEntry.Text,
+			ReceiptNumber: receiptEntry.Text,
+		}
+		storeName, receiptNumber, err := validation.ValidateReceipt(receipt)
 
 		if err != nil {
 			dialog.ShowError(err, myWindow)

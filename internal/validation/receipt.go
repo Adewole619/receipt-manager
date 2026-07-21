@@ -3,14 +3,16 @@ package validation
 import (
 	"errors"
 	"strings"
+
+	"receipt-manager/internal/models"
 )
 
 // Validation: Store Name check and 🛠️ Receipt Number check
-func ValidateReceipt(storeName, receiptNumber string) (string, string, error) {
+func ValidateReceipt(receipt models.Receipt) (string, string, error) {
 	var errMessages []string
 
-	cleanStoreName := strings.TrimSpace(storeName)
-	cleanReceiptNumber := strings.TrimSpace(receiptNumber)
+	cleanStoreName := strings.TrimSpace(receipt.StoreName)
+	cleanReceiptNumber := strings.TrimSpace(receipt.ReceiptNumber)
 
 	if cleanStoreName == "" {
 		errMessages = append(errMessages, "- Store Name is required.")
