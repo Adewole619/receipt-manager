@@ -6,6 +6,212 @@ A daily log of concepts learned, challenges tackled, and milestones reached whil
 
 ## 🗓️ Daily Entries
 
+# Day 6
+
+## Date
+22 July 2026
+
+## Objective
+
+Learn how to store multiple receipts in memory using slices, organize storage logic into its own package, and understand how data flows through the application.
+
+---
+
+## What I Learned
+
+### Slices
+
+- A slice is a dynamic collection that can store multiple values of the same type.
+- Instead of storing only one `Receipt`, I can store many `Receipt` objects inside a slice.
+- Slices grow dynamically using the `append()` function.
+
+### In-Memory Storage
+
+- Data stored in a slice exists only while the application is running.
+- When the application closes, all receipts stored in memory are lost.
+- This is called **volatile storage**.
+- A database will later provide **persistent storage**, allowing receipts to remain after the application is closed.
+
+### Storage Package
+
+I created a new package:
+
+```
+internal/
+    storage/
+```
+
+This package is responsible for managing receipts stored in memory.
+
+Current responsibilities include:
+
+- Holding the receipt slice.
+- Adding new receipts.
+- Printing stored receipts.
+
+### Data Flow
+
+I now understand the complete flow when the Save button is clicked:
+
+```
+User Input
+
+↓
+
+Create Receipt
+
+↓
+
+Validate Receipt
+
+↓
+
+If validation succeeds
+
+↓
+
+Store Receipt
+
+↓
+
+Print Stored Receipts
+
+↓
+
+Show Success Dialog
+```
+
+This helped me understand how information moves through different parts of the application.
+
+---
+
+## What I Built
+
+- Created the `storage` package.
+- Added a slice to store multiple receipts.
+- Created an `AddReceipt()` function.
+- Created a `PrintReceipts()` function.
+- Connected the Save button to the storage package.
+- Successfully stored multiple receipts during program execution.
+- Displayed all stored receipts in the terminal.
+
+---
+
+## Challenges
+
+- Understanding where the receipts slice should be declared.
+- Deciding which package should own the slice.
+- Understanding why data disappears after the application closes.
+- Thinking about who should be responsible for preventing duplicate receipts.
+
+---
+
+## Solutions
+
+- Learned that the slice must exist outside the Save button callback so it survives multiple button clicks.
+- Moved storage responsibilities into a dedicated package.
+- Learned that memory is temporary and a database will later solve this problem.
+- Decided that duplicate checking currently belongs in the storage layer, while the database will eventually enforce uniqueness.
+
+---
+
+## Key Takeaways
+
+- A slice stores multiple values of the same type.
+- `append()` adds new elements to a slice.
+- Packages should own their responsibilities.
+- The UI should not know how receipts are stored.
+- Storage should manage receipt collections.
+- Databases provide permanent storage, while slices provide temporary storage.
+
+---
+
+## Design Decisions
+
+Today I decided that:
+
+- The storage package should own receipt storage.
+- The Save button should only ask the storage package to save a receipt.
+- Storage should expose functions like:
+  - `AddReceipt()`
+  - `PrintReceipts()`
+- The UI should not directly manage the receipt slice.
+
+---
+
+## Questions I Asked Today
+
+- Where should the receipts slice be declared?
+- Should the receipts slice be global?
+- Why should the storage package own the slice?
+- Should duplicate receipts be allowed?
+- Which layer should be responsible for checking duplicates?
+
+---
+
+## Reflection
+
+Today I learned that storing data is more than simply appending values to a slice. I learned that deciding where data lives and which package owns it is an important software design decision. I also realized that keeping responsibilities separated makes the application easier to maintain and prepares it for future improvements like SQLite.
+
+---
+
+## Architecture Progress
+
+Current project structure:
+
+```
+receipt-manager/
+│
+├── cmd/
+│
+├── internal/
+│   ├── models/
+│   ├── validation/
+│   └── storage/
+│
+├── docs/
+│
+├── README.md
+│
+└── main.go
+```
+
+Current application flow:
+
+```
+User
+
+↓
+
+Fyne UI
+
+↓
+
+Receipt Model
+
+↓
+
+Validation
+
+↓
+
+Storage (Slice)
+
+↓
+
+Terminal Output
+```
+
+---
+
+## Tomorrow's Goal (Day 7)
+
+- Learn about persistent storage.
+- Understand why databases are needed.
+- Introduce SQLite.
+- Save receipts permanently instead of only in memory.
+- Learn how the storage layer can switch from using slices to using a database without changing the UI.
+
 # Day 5
 
 ## Date

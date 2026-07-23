@@ -92,6 +92,29 @@ git clone <repository-url>
 
 #### Install dependencies
 
+On Linux, Fyne/GLFW requires native development libraries for X11/Wayland and OpenGL.
+
+Debian/Ubuntu:
+
+```bash
+sudo apt update
+sudo apt install -y libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxkbcommon-dev libgl1-mesa-dev libwayland-dev libwayland-egl-backend-dev
+```
+
+Fedora/RHEL:
+
+```bash
+sudo dnf install -y libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel libxkbcommon-devel mesa-libGL-devel wayland-devel wayland-protocols-devel
+```
+
+Arch Linux:
+
+```bash
+sudo pacman -Syu mesa libx11 libxcursor libxrandr libxinerama libxkbcommon wayland
+```
+
+Then install Go module dependencies:
+
 ```bash
 go mod tidy
 ```

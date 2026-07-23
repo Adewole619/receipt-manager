@@ -8,24 +8,24 @@ import (
 )
 
 // Validation: Store Name check and 🛠️ Receipt Number check
-func ValidateReceipt(receipt models.Receipt) (string, string, error) {
+func ValidateReceipt(receipt models.Receipt) (models.Receipt, error) {
 	var errMessages []string
 
-	cleanStoreName := strings.TrimSpace(receipt.StoreName)
-	cleanReceiptNumber := strings.TrimSpace(receipt.ReceiptNumber)
+	receipt.StoreName = strings.TrimSpace(receipt.StoreName)
+	receipt.ReceiptNumber = strings.TrimSpace(receipt.ReceiptNumber)
 
-	if cleanStoreName == "" {
+	if receipt.StoreName == "" {
 		errMessages = append(errMessages, "- Store Name is required.")
 	}
 
-	if cleanReceiptNumber == "" {
+	if receipt.ReceiptNumber == "" {
 		errMessages = append(errMessages, "- Receipt Number is required.")
 	}
 
 	if len(errMessages) > 0 {
 		combinedMessage := strings.Join(errMessages, "\n")
-		return cleanStoreName, cleanReceiptNumber, errors.New("validation Error:\n" + combinedMessage)
+		return receipt, errors.New("validation error:\n" + combinedMessage)
 	}
 
-	return cleanStoreName, cleanReceiptNumber, nil
+	return receipt, nil
 }
