@@ -6,6 +6,281 @@ A daily log of concepts learned, challenges tackled, and milestones reached whil
 
 ## 🗓️ Daily Entries
 
+# Day 7
+
+## Date
+26 July 2026
+
+## Objective
+
+Understand why databases are needed, learn the role of SQLite in my receipt application, and begin integrating SQLite into my Go project.
+
+---
+
+## What I Learned
+
+### Why I Need a Database
+
+Before today, my application stored receipts in a slice.
+
+Although this allowed me to save multiple receipts while the application was running, I discovered that all the data was lost whenever the application closed because slices are stored in memory (RAM).
+
+A database solves this problem by storing data permanently on disk.
+
+---
+
+### What is SQLite?
+
+SQLite is a lightweight relational database management system that stores an entire database inside a single file.
+
+Unlike databases such as MySQL or PostgreSQL, SQLite does not require a separate database server to run.
+
+This makes SQLite an excellent choice for my receipt manager because:
+
+- It is lightweight.
+- It is easy to distribute with my application.
+- It stores all data in a single file.
+- It works well for desktop and Android applications.
+
+---
+
+### Understanding "Serverless"
+
+I learned that "serverless" does not mean SQLite cannot be used with the internet.
+
+Instead, it means that SQLite does not require a separate database server process.
+
+My Go application communicates directly with the SQLite database file.
+
+```
+Go Application
+
+↓
+
+SQLite Driver
+
+↓
+
+receipt.db
+```
+
+---
+
+### Database vs Memory
+
+Memory (Slices)
+
+- Fast
+- Temporary
+- Data disappears when the application closes
+
+SQLite Database
+
+- Permanent
+- Stored on disk
+- Data remains after restarting the application
+
+---
+
+### Project Architecture
+
+I learned that SQLite should not communicate directly with the user interface.
+
+Instead, every layer has its own responsibility.
+
+```
+User
+
+↓
+
+Fyne UI
+
+↓
+
+Validation
+
+↓
+
+Storage
+
+↓
+
+SQLite Database
+```
+
+Responsibilities:
+
+- UI → Interacts with the user.
+- Validation → Checks that receipt data is valid.
+- Storage → Coordinates saving and retrieving receipts.
+- SQLite → Permanently stores data and enforces database rules.
+
+---
+
+### Why the Storage Package Exists
+
+I now understand why I created the storage package before introducing SQLite.
+
+Previously:
+
+```
+Storage
+
+↓
+
+Slice
+```
+
+Later:
+
+```
+Storage
+
+↓
+
+SQLite
+```
+
+The user interface will not need to change because it only communicates with the storage package.
+
+---
+
+### Database Constraints
+
+I learned that the database should enforce important rules.
+
+For my project, the receipt number should be unique.
+
+If someone attempts to save another receipt with the same receipt number:
+
+- SQLite should reject the insert.
+- The application should receive the error.
+- The UI should decide how to inform the user.
+
+This keeps responsibilities separated.
+
+---
+
+### Database Connection
+
+I created a new package:
+
+```
+internal/
+    database/
+```
+
+Inside it I began building the database connection.
+
+I learned about:
+
+- `database/sql`
+- SQLite drivers
+- Blank imports (`_`)
+- `sql.Open()`
+- Shared database connections
+
+---
+
+## What I Built
+
+- Created the `database` package.
+- Installed the SQLite driver.
+- Created the initial database connection.
+- Learned how Go communicates with SQLite.
+- Created (or prepared to create) the `receipt.db` database file.
+
+---
+
+## Challenges
+
+- Understanding why I needed another package (`database`) when I already had a `storage` package.
+- Understanding what "serverless" actually means.
+- Understanding how SQLite communicates with Go.
+
+---
+
+## Solutions
+
+- Learned that the database package manages the database connection.
+- Learned that the storage package manages receipt operations.
+- Understood that SQLite stores data permanently while slices only exist during program execution.
+
+---
+
+## Key Takeaways
+
+- Databases provide persistent storage.
+- SQLite stores data in one file.
+- SQLite does not require a separate database server.
+- The UI should never communicate directly with the database.
+- The storage package should act as the bridge between the application and SQLite.
+- The database should enforce important rules such as unique receipt numbers.
+
+---
+
+## Design Decisions
+
+Today I decided that:
+
+- Receipt numbers must be unique.
+- SQLite should enforce uniqueness.
+- The UI should handle duplicate receipt errors.
+- The storage package should remain responsible for communicating with the database.
+- The database package should only manage database connections.
+
+---
+
+## Questions I Asked Today
+
+- Why do I need SQLite?
+- What does serverless mean?
+- Why shouldn't the UI communicate directly with SQLite?
+- Which layer should check for duplicate receipt numbers?
+- Why do we need a database package?
+
+---
+
+## Reflection
+
+Today helped me understand that a database is much more than a place to store information. It is responsible for protecting data, enforcing rules, and ensuring information remains available even after the application closes. I also learned the importance of separating responsibilities between the UI, storage layer, and database layer. This architecture will make my application easier to maintain and extend in the future.
+
+---
+
+## Architecture Progress
+
+Current architecture:
+
+```
+User
+
+↓
+
+Fyne UI
+
+↓
+
+Validation
+
+↓
+
+Storage
+
+↓
+
+SQLite Database
+```
+
+---
+
+## Tomorrow's Goal (Day 8)
+
+- Create the `receipts` table.
+- Learn SQL `CREATE TABLE`.
+- Save the first receipt into SQLite.
+- Replace in-memory storage with database storage.
+- Retrieve saved receipts from the database.
+
 # Day 6
 
 ## Date

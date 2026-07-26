@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -9,12 +10,18 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 
+	"receipt-manager/internal/database"
 	"receipt-manager/internal/models"
 	"receipt-manager/internal/storage"
 	"receipt-manager/internal/validation"
 )
 
 func main() {
+
+	err := database.Connect()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Welcome message
 	fmt.Println("Hello, Welcome to the Receipt Manager Application!")
 	fmt.Println("This application helps you manage your receipts efficiently.")
@@ -53,7 +60,7 @@ func main() {
 			StoreName:     storeEntry.Text,
 			ReceiptNumber: receiptEntry.Text,
 		}
-		receipt , err := validation.ValidateReceipt(receipt)
+		receipt, err := validation.ValidateReceipt(receipt)
 
 		if err != nil {
 			dialog.ShowError(err, myWindow)
